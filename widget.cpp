@@ -165,8 +165,8 @@ void Widget::on_ButtonToWait_clicked(){//前往等待区
 
 void Widget::on_ButtonToLoad_clicked(){//前往装货区
     float x,y = 0;
-    x = ui->lineEditWaitx->text().toFloat();
-    y = ui->lineEditWaity->text().toFloat();
+    x = ui->lineEditLoadx->text().toFloat();
+    y = ui->lineEditLoady->text().toFloat();
     QByteArray x_byte,y_byte;
     x_byte.resize(sizeof(float));
     y_byte.resize(sizeof(float));
@@ -182,8 +182,8 @@ void Widget::on_ButtonToLoad_clicked(){//前往装货区
 
 void Widget::on_ButtonToUnload_clicked(){//前往卸货区
     float x,y = 0;
-    x = ui->lineEditWaitx->text().toFloat();
-    y = ui->lineEditWaity->text().toFloat();
+    x = ui->lineEditUnloadx->text().toFloat();
+    y = ui->lineEditUnloady->text().toFloat();
     QByteArray x_byte,y_byte;
     x_byte.resize(sizeof(float));
     y_byte.resize(sizeof(float));
