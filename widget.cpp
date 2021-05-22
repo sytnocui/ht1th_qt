@@ -25,22 +25,14 @@ Widget::~Widget()
 }
 
 void Widget::table_DataSetup(){//初始化菜单
-    table_para_construct(type_ctrl,type_int,"测试00",&int_array[0]);
-//    table_para_construct(type_ctrl,type_int,"测试01",&int_array[1]);
-//    table_para_construct(type_ctrl,type_int,"测试02",&int_array[2]);
-//    table_para_construct(type_ctrl,type_int,"测试03",&int_array[3]);
-//    table_para_construct(type_ctrl,type_int,"测试04",&int_array[4]);
+    table_para_construct(type_ctrl,type_float,"测试9",&float_array[5]);
     table_para_construct(type_ctrl,type_float,"测试10",&float_array[0]);
-//    table_para_construct(type_ctrl,type_float,"测试11",&float_array[1]);
-//    table_para_construct(type_ctrl,type_float,"测试12",&float_array[2]);
-//    table_para_construct(type_ctrl,type_float,"测试13",&float_array[3]);
-//    table_para_construct(type_ctrl,type_float,"测试14",&float_array[4]);
+    table_para_construct(type_ctrl,type_float,"测试11",&float_array[1]);
+    table_para_construct(type_ctrl,type_float,"测试12",&float_array[2]);
+    table_para_construct(type_ctrl,type_float,"测试13",&float_array[3]);
+    table_para_construct(type_ctrl,type_float,"测试14",&float_array[4]);
 
     table_para_construct(type_view,type_int,"测试00",&int_array[0]);
-    table_para_construct(type_view,type_int,"测试01",&int_array[1]);
-    table_para_construct(type_view,type_int,"测试02",&int_array[2]);
-    table_para_construct(type_view,type_int,"测试03",&int_array[3]);
-    table_para_construct(type_view,type_int,"测试04",&int_array[4]);
     table_para_construct(type_view,type_float,"测试10",&float_array[0]);
     table_para_construct(type_view,type_float,"测试11",&float_array[1]);
     table_para_construct(type_view,type_float,"测试12",&float_array[2]);
@@ -61,77 +53,51 @@ void Widget::on_ButtonRead_clicked()//读取参数
         bool isOk = file.open(QIODevice::ReadOnly);
         if(isOk == true)
         {
-#if 0
-            //读文件,默认只识别utf8编码
-            QByteArray array = file.readAll();
-            //显示到缓存区
-            ui->textEdit->setText(array);
-#endif
-
-#if 1
-            QByteArray array;
-            while(file.atEnd() == false)
-            {
-                //读一行
-                array += file.readLine();
-                ui->textEdit->setText(array);
+            for(int i=0;i<ctrlpara_list.size();i++){
+                if(file.atEnd() == true)
+                    qDebug()<<"列表参数数目与文件参数数目不对应";
+                switch (ctrlpara_list.at(i).type_data) {
+                case type_int: *ctrlpara_list.at(i).vari = QString(file.readLine()).section("##",0,0).toInt();break;
+                case type_float: *ctrlpara_list.at(i).varf = QString(file.readLine()).section("##",0,0).toFloat();break;}
             }
-#endif
-
+            if(file.atEnd() == false)
+                qDebug()<<"列表参数数目与文件参数数目不对应";
         }
         //关闭文件
         file.close();
-
-        //获取文件信息
-        QFileInfo info(path);
-        qDebug()<<"文件名字："<<info.fileName().toUtf8().data();
-        qDebug()<<"文件后缀："<<info.suffix();
-        qDebug()<<"文件大小："<<info.size();
-        qDebug()<<"文件创建时间："<<info.created().toString("yyyy-MM-dd hh:mm:ss");
     }
+    ctrl_table_update();
 }
 
 void Widget::on_ButtonCtrlSave_clicked()//保存参数
 {
-    QString path = QFileDialog::getSaveFileName(this,"save","../","TXT(*.txt)");
+    //获取参数
+    ctrl_table_get();
+    //开始写文件
+    QString path = QFileDialog::getSaveFileName(this,"save","./","TXT(*.txt)");
     if(path.isEmpty()== false)
     {
         QFile file;//创建文件对象
         //关联文件名字
         file.setFileName(path);
-
         //打开文件，只写方式
         bool isOk = file.open(QIODevice::WriteOnly);
         if(isOk == true)
         {
-            //获取编辑区内容
-            QString str = ui->textEdit->toPlainText();
+            QString str;
+            //获取参数信息
+            for(int i=0;i<ctrlpara_list.size();i++){
+                switch (ctrlpara_list.at(i).type_data) {
+                case type_int: qDebug()<<"不是说都是浮点数吗";break;
+                case type_float: str.append(QString("%1").arg(*(ctrlpara_list.at(i).varf)))
+                                    .append("##")
+                                    .append(ctrlpara_list.at(i).name)
+                                    .append("\n");break;}
+            }
+            qDebug()<<str;
             //写文件
-
-            //qstring ->qbytearray
-            //toutf8后就已经把qstring转换成了字节数组
-            //用这个就够了，下面了解就行
             file.write(str.toUtf8());
-
-#if 0
-            //qstring -> c++ string -> char*
-            file.write(str.toStdString().data());
-
-            //转换为本地平台编码
-            file.write(str.toLocal8Bit());
-
-            //qstring -> qbytearray的方式
-            QString buf = "123";
-            QByteArray a = buf.toUtf8();//中文
-            a = buf.toLocal8Bit();//本地编码
-
-            //char* -> qstring
-            char *p = "abc";
-            QString c = QString(p);
-#endif
-
         }
-
         file.close();
     }
 }
