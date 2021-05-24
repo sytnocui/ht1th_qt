@@ -7,6 +7,9 @@ Widget::Widget(QWidget *parent)
 {
     ui->setupUi(this);
 
+    view_table_DataSetup();
+    view_table_init();
+
     tcp_init();
     text_print("hello sytnocui!");
     text_print(QString("hello %1").arg("smartcar!"));

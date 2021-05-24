@@ -67,7 +67,7 @@ public:
     void view_table_init();
     void view_table_DataSetup();
     void view_table_update();
-    void table_para_construct(PARA_USETYPE type_use,PARA_DATATYPE type_data,const QString &name,float value);
+    void table_para_construct(PARA_USETYPE type_use,PARA_DATATYPE type_data,const QString &name);
 
     void text_print(QString qstr);
 
