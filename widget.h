@@ -35,8 +35,8 @@ typedef enum
 typedef struct
 {
     QString name;
-    int *vari;
-    float *varf;
+    int vari;
+    float varf;
     PARA_USETYPE type_use;
     PARA_DATATYPE type_data;
 }TABLE_PARA;
@@ -57,12 +57,17 @@ public:
 
     void udp_init();
 
-    void table_DataSetup();
-    void table_init();//表格初始化
-    void view_table_update();
+    //不需要初始化控制菜单
+//    void ctrl_table_DataSetup();
+    void ctrl_table_init();//表格初始化
+    void ctrl_table_clean();//表格清零
     void ctrl_table_update();
     void ctrl_table_get();
-    void table_para_construct(PARA_USETYPE type_use,PARA_DATATYPE type_data,const QString &name,void* varf);
+
+    void view_table_init();
+    void view_table_DataSetup();
+    void view_table_update();
+    void table_para_construct(PARA_USETYPE type_use,PARA_DATATYPE type_data,const QString &name,float value);
 
     void text_print(QString qstr);
 
@@ -97,7 +102,7 @@ private slots:
 private:
     Ui::Widget *ui;
 
-    QList<TABLE_PARA> viewpara_list;//实时变量
     QList<TABLE_PARA> ctrlpara_list;//控制参数
+    QList<TABLE_PARA> viewpara_list;//实时变量
 };
 #endif // WIDGET_H
