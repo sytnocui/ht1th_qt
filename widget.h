@@ -53,6 +53,7 @@ public:
 
     void tcp_init();
     void tcp_read_msg();
+    void tcp_viewpara_get(QByteArray array);
     void tcp_connected();
 
     void udp_init();

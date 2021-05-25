@@ -17,9 +17,26 @@ void Widget::tcp_read_msg(){
     qint16 port = tcpSocket->peerPort();
     //获取对方发送的内容
     QByteArray array = tcpSocket->readAll();
+    tcp_viewpara_get(array);//用个引用试试行不行
+
     QString temp = QString("[%1:%2]:%3").arg(ip).arg(port).arg(QString(array.toHex()));
     //追加到编辑区中
     text_print(temp);
+}
+
+void Widget::tcp_viewpara_get(QByteArray array)
+{
+    int para_num = array.size()/4;
+    for(int i=0;i<viewpara_list.size();i++){
+        if(para_num <= i)break;//数目不匹配跳出
+        float value;
+        memcpy(&value,&array.data()[4*i],sizeof(float));
+        qDebug()<<value;
+        switch (viewpara_list.at(i).type_data) {
+        case type_int: qDebug()<<"不是说都是浮点数吗";break;
+        case type_float: viewpara_list[i].varf = value;break;}
+    }
+    view_table_update();
 }
 
 void Widget::on_ButtonConnect_clicked(){
