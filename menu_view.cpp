@@ -9,6 +9,7 @@ void Widget::view_table_DataSetup(){//初始化菜单
     table_para_construct(type_view,type_float,"测试14");
     table_para_construct(type_view,type_float,"测试15");
     table_para_construct(type_view,type_float,"测试16");
+    table_para_construct(type_view,type_float,"测试17");
 }
 
 

@@ -5,12 +5,13 @@
 void Widget::udp_init()
 {
     udpSocket = new QUdpSocket(this);
-    udpSocket->bind(8888);
+    udpSocket->bind(QHostAddress::LocalHost, 8888);
     connect(udpSocket, &QUdpSocket::readyRead,this,&Widget::udp_read_msg);
 }
 
 void Widget::udp_read_msg()
 {
+    qDebug()<<"hello";
     QByteArray datagram;
     while (udpSocket->hasPendingDatagrams()) {
         datagram.resize(udpSocket->pendingDatagramSize());
@@ -19,7 +20,7 @@ void Widget::udp_read_msg()
         udpSocket->readDatagram(datagram.data(), datagram.size(), &sender, &senderPort);
     }
     //处理数据
-    if(datagram.size()>100)//更新参数
+    if(datagram.size()<100)//更新参数
     {
         int para_num = datagram.size()/4;
         for(int i=0;i<viewpara_list.size();i++){

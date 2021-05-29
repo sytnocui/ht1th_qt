@@ -11,6 +11,7 @@ Widget::Widget(QWidget *parent)
     view_table_init();
 
     tcp_init();
+    udp_init();
     text_print("hello sytnocui!");
     text_print(QString("hello %1").arg("smartcar!"));
 }
