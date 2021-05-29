@@ -50,6 +50,8 @@ public:
     ~Widget();
 
     QTcpSocket * tcpSocket;
+    //udp通讯
+    QUdpSocket * udpSocket;
 
     void tcp_init();
     void tcp_read_msg();
@@ -57,6 +59,7 @@ public:
     void tcp_connected();
 
     void udp_init();
+    void udp_read_msg();
 
     //不需要初始化控制菜单
 //    void ctrl_table_DataSetup();
