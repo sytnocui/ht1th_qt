@@ -77,8 +77,6 @@ public:
 
 private slots:
 
-    void on_ButtonCtrlSend_clicked();
-
     void on_ButtonConnect_clicked();
 
     void on_ButtonDisConnect_clicked();
@@ -94,15 +92,6 @@ private slots:
     void on_ButtonStart_clicked();
 
     void on_ButtonRestart_clicked();
-
-    void on_ButtonTabImgRead_clicked();
-
-    void on_ButtonTabImgClose_clicked();
-
-    void on_ButtonRead_clicked();
-
-    void on_ButtonCtrlSave_clicked();
-
 private:
     Ui::Widget *ui;
 

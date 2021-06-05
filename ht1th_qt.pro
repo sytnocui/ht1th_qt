@@ -15,7 +15,6 @@ CONFIG += c++11
 
 SOURCES += \
     main.cpp \
-    menu_ctrl.cpp \
     menu_view.cpp \
     tcp.cpp \
     udp.cpp \

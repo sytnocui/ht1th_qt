@@ -60,8 +60,6 @@ void Widget::on_ButtonDisConnect_clicked(){
 //Reset = 0x01
 //Run   = 0x10
 //Stop  = 0x20
-//ImgOpen = 0x60
-//ImgClose = 0x70
 //*have-para*//
 //To_Wait = 0x30
 //To_Load = 0x40
@@ -85,18 +83,6 @@ void Widget::on_ButtonStop_clicked(){//停车
     temp.append(0x20);
     tcpSocket->write(temp);
     text_print("Stop");}
-
-void Widget::on_ButtonTabImgRead_clicked(){//打开实时显示图像
-    QByteArray temp;
-    temp.append(0x60);
-    tcpSocket->write(temp);
-    text_print("ImgOpen");}
-
-void Widget::on_ButtonTabImgClose_clicked(){//关闭实时显示图像
-    QByteArray temp;
-    temp.append(0x70);
-    tcpSocket->write(temp);
-    text_print("ImgClose");}
 
 /////////have_para
 void Widget::on_ButtonToWait_clicked(){//前往等待区
@@ -149,22 +135,3 @@ void Widget::on_ButtonToUnload_clicked(){//前往卸货区
     //send
     tcpSocket->write(data_byte);
     text_print("To_Unload:"+QString(data_byte.toHex()));}
-
-void Widget::on_ButtonCtrlSend_clicked(){//修改参数
-    //获取控制参数
-    ctrl_table_get();
-//    ctrl_table_update();
-//    view_table_update();
-    //将控制参数加入缓存中
-    QByteArray data_byte;
-    data_byte.append(0x77);
-    QByteArray ctrl_byte(4,0);//init qbytearray
-    for(int i=0;i<ctrlpara_list.size();i++){
-        switch (ctrlpara_list.at(i).type_data) {
-        case type_int: memcpy(ctrl_byte.data(),&ctrlpara_list.at(i).vari,sizeof(int));
-            data_byte.append(ctrl_byte);break;
-        case type_float:memcpy(ctrl_byte.data(),&ctrlpara_list.at(i).varf,sizeof(float));
-            data_byte.append(ctrl_byte);break;}}
-    //send
-    tcpSocket->write(data_byte);
-    text_print("CtrlUpdate"+QString(data_byte.toHex()));}

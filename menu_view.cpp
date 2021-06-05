@@ -51,3 +51,7 @@ void Widget::table_para_construct(PARA_USETYPE type_use,PARA_DATATYPE type_data,
     case type_ctrl: qDebug()<<"怎么这里有控制参数";
             ctrlpara_list<<temppara;break;}
 }
+
+void Widget::text_print(QString qstr){//打印
+    ui->textEdit->append(qstr);}
+
