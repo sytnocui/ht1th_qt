@@ -1,11 +1,15 @@
 #include "widget.h"
 #include "ui_widget.h"
+#include <opencv2/core.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgproc.hpp>
+using namespace cv;
 
 ///////////////////////////////////////////udp////////////////////////////////////////////////
 void Widget::udp_init()
 {
     udpSocket = new QUdpSocket(this);
-    udpSocket->bind(QHostAddress::LocalHost, 8888);
+    udpSocket->bind(QHostAddress::AnyIPv4, 8888);
     connect(udpSocket, &QUdpSocket::readyRead,this,&Widget::udp_read_msg);
 }
 
@@ -36,8 +40,14 @@ void Widget::udp_read_msg()
     }
     else//更新图像
     {
-        QPixmap pix;
-        pix.loadFromData(datagram);
-        ui->labelImg->setPixmap(pix.scaled(ui->labelImg->size()));
+        Mat datamat = Mat(120, 160, CV_8UC3, datagram.data());
+        qDebug()<<datamat.data;
+        cvtColor(datamat, datamat, COLOR_BGR2RGB);        // 图像格式转换
+        QImage dataimg = QImage((const unsigned char*)(datamat.data), datamat.cols, datamat.rows, QImage::Format_RGB888);
+        ui->labelImg->setPixmap(QPixmap::fromImage(dataimg.scaled(ui->labelImg->size(), Qt::KeepAspectRatio)));  // label 显示图像
+
+//        QPixmap pix;
+//        pix.loadFromData(datagram);
+//        ui->labelImg->setPixmap(pix.scaled(ui->labelImg->size()));
     }
 }
